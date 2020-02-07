@@ -13,12 +13,6 @@ enum Vect[+A, S<:Int]{
 
     def ::[B >: A](e: B): Vect[B, S + 1] = Cons(e, this)
 
-    /*def headOption: Option[A] = this match {
-        case Empty => None
-        case Cons(h, t) => Some(h.asInstanceOf[A]) // Weird 
-    
-    }*/
-
     def size(using V: ValueOf[S]) = V.value
     
 }
@@ -39,8 +33,12 @@ object Vect {
         case Cons(h,t) => Cons(f(h), t.map(f))
     }
 
+    def [A, B, S <: Int] (v: Vect[A, S]) zip (w: Vect[B, S]): Vect[(A, B), S] = (v, w) match {
+        case (Empty, Empty) => Empty
+        case (Cons(a, ta), Cons(b, tb)) => Cons(a -> b, ta zip tb)
+    }
+
 }
 
-// Fast text + Thread safety
 
 
